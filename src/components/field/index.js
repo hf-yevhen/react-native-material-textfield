@@ -139,14 +139,19 @@ export default class TextField extends PureComponent {
     y1: 0,
   };
 
-  static getDerivedStateFromProps({ error }, state) {
-    /* Keep last received error in state */
-    if (error && error !== state.error) {
-      return { error };
+    static getDerivedStateFromProps({ error, value }, state) {
+      let update = {};
+      /* Keep last received error in state */
+      if (error && error !== state.error) {
+        update.error = error;
+      }
+      /* Keep last value in state */
+      if (value !== state.text) {
+        update.text = value;
+      }
+  
+      return update;
     }
-
-    return null;
-  }
 
   constructor(props) {
     super(props);
@@ -223,6 +228,7 @@ export default class TextField extends PureComponent {
 
     let options = {
       toValue: this.focusState(),
+      useNativeDriver: false,
       duration,
     };
 
